@@ -39,7 +39,10 @@ function getOptions(
                     include: ["**"],
                 }),
             ],
-            external: Object.keys(pkg.dependencies ?? {}),
+            external: [
+                ...Object.keys(pkg.dependencies ?? {}),
+                ...Object.keys(pkg.peerDependencies ?? {}),
+            ],
         } satisfies RollupOptions,
         options,
     );

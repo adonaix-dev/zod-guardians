@@ -13,8 +13,14 @@
     "engines": {
         "node": "^20.0.0"
     },
-    "main": "./dist/main.js",
+    "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
     "files": [
         "dist"
     ],
@@ -36,10 +42,13 @@
         "type-guard"
     ],
     "scripts": {
-        "build": "rollup -c"
+        "build": "rollup -c",
+        "prepublishOnly": "bun build"
+    },
+    "peerDependencies": {
+        "zod": ">=4.0.0"
     },
     "dependencies": {
-        "zod": "^4.1.13",
         "zod-validation-error": "^5.0.0"
     },
     "devDependencies": {
