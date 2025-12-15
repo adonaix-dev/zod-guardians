@@ -43,7 +43,7 @@
     ],
     "scripts": {
         "build": "rollup -c",
-        "prepublishOnly": "bun build"
+        "prepublishOnly": "bun run build"
     },
     "peerDependencies": {
         "zod": ">=4.0.0"
