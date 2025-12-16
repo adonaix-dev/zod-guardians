@@ -45,10 +45,8 @@
         "build": "rollup -c",
         "prepublishOnly": "bun run build"
     },
-    "peerDependencies": {
-        "zod": ">=4.0.0"
-    },
     "dependencies": {
+        "zod": "^4.2.0",
         "zod-validation-error": "^5.0.0"
     },
     "devDependencies": {
