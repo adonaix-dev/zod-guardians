@@ -1,5 +1,5 @@
 import type { ZodSchema } from "~/Common/ZodSchema";
-import type { ZodInputArguments } from "~/Core/Types/ZodInputArguments";
+import type { ZodRawArguments } from "~/Core/Types/ZodRawArguments";
 
 /**
  * Represents the structure of a single function overload.
@@ -8,7 +8,7 @@ import type { ZodInputArguments } from "~/Core/Types/ZodInputArguments";
  * @template Return The return type for this overload.
  */
 interface ZodOverload<Args extends ZodSchema = ZodSchema, Return = any> {
-    arguments: ZodInputArguments<Args>;
+    arguments: ZodRawArguments<Args>;
     return: Return;
 }
 

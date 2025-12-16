@@ -5,14 +5,14 @@ import type { Assert } from "@adonaix/types";
 import { ArgumentsError } from "~/Core/Error/ArgumentsError";
 import { resolveSchema } from "~/Core/ResolveSchema";
 import type { ThisArg } from "~/Common/ThisArg";
-import type { ZodInputFunction } from "~/Common/ZodInputFunction";
+import type { ZodRawFunction } from "~/Common/ZodRawFunction";
 import type { ZodSchema } from "~/Common/ZodSchema";
 import type { ZodSchemaArguments } from "~/Common/ZodSchemaArguments";
 import type { ZodSchemaDefinition } from "~/Common/ZodSchemaDefinition";
 import type { ZodSchemaRest } from "~/Common/ZodSchemaRest";
-import type { ZodInputArguments } from "~/Core/Types/ZodInputArguments";
+import type { ZodRawArguments } from "~/Core/Types/ZodRawArguments";
 
-import type { ZodOutputFunction } from "./Types/ZodOutputFunction";
+import type { ZodGuardedFunction } from "./Types/ZodGuardedFunction";
 
 /**
  * Represents a function wrapper that automatically validates its
@@ -24,14 +24,14 @@ import type { ZodOutputFunction } from "./Types/ZodOutputFunction";
  */
 class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
     readonly #schema: ZodTuple<ZodSchemaArguments<Args>, ZodSchemaRest<Args>>;
-    readonly #fn: ZodInputFunction<This, Args, Return>;
+    readonly #fun: ZodRawFunction<This, Args, Return>;
 
     private constructor(
         args: ZodSchemaDefinition<Args>,
-        fn: ZodInputFunction<This, Args, Return>,
+        fun: ZodRawFunction<This, Args, Return>,
     ) {
         this.#schema = resolveSchema(args);
-        this.#fn = fn;
+        this.#fun = fun;
     }
 
     /**
@@ -40,13 +40,13 @@ class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
      * @param args The definition of the arguments schemas. To define
      *   a rest parameter, wrap the last schema in an array (e.g.,
      *   `[z.string()]`).
-     * @param fn The implementation of the function.
+     * @param fun The implementation of the function.
      */
     static create<const As extends ZodSchema, Return, This = void>(
         args: ZodSchemaDefinition<As>,
-        fn: ZodInputFunction<This, As, Return>,
+        fun: ZodRawFunction<This, As, Return>,
     ): ZodFunction<This, As, Return> {
-        return new ZodFunction(args, fn);
+        return new ZodFunction(args, fun);
     }
 
     /**
@@ -60,11 +60,11 @@ class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
      * @returns The return value of the implemented function.
      * @throws {ArgumentsError} If validation fails.
      */
-    apply(args: ZodInputArguments<Args>, thisArg: ThisArg<This>): Return {
+    apply(args: ZodRawArguments<Args>, thisArg: ThisArg<This>): Return {
         const { success, data, error } = this.#schema.safeParse(args);
 
         if (success) {
-            return Reflect.apply(this.#fn, thisArg, data);
+            return Reflect.apply(this.#fun, thisArg, data);
         }
 
         throw new ArgumentsError(error.issues);
@@ -76,12 +76,12 @@ class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
      *
      * @returns A function that can be called directly.
      */
-    compile(): ZodOutputFunction<This, Args, Return> {
+    compile(): ZodGuardedFunction<This, Args, Return> {
         const self = this;
 
         return function (
             this: This,
-            ...args: Assert<ZodInputArguments<Args>, any[]>
+            ...args: Assert<ZodRawArguments<Args>, any[]>
         ): Return {
             return self.apply(args, this as any);
         };

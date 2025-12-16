@@ -1,10 +1,10 @@
 import type { ZodTuple } from "zod";
 
-import type { ZodInputFunction } from "~/Common/ZodInputFunction";
+import type { ZodRawFunction } from "~/Common/ZodRawFunction";
 
 interface OverloadRegistryEntry {
     schema: ZodTuple;
-    fun: ZodInputFunction;
+    fun: ZodRawFunction;
 }
 
 export type { OverloadRegistryEntry };

@@ -1,21 +1,18 @@
 import { resolveSchema } from "~/Core/ResolveSchema";
-import type { ZodInputFunction } from "~/Common/ZodInputFunction";
+import type { ZodRawFunction } from "~/Common/ZodRawFunction";
 import type { ZodSchemaDefinition } from "~/Common/ZodSchemaDefinition";
 
 import type { OverloadRegistryEntry } from "./OverloadRegistryEntry";
 
-class ZodOverloadRegistry {
+class OverloadRegistry {
     private constructor(private readonly entries: OverloadRegistryEntry[] = []) {}
 
-    static create(): ZodOverloadRegistry {
-        return new ZodOverloadRegistry();
+    static create(): OverloadRegistry {
+        return new OverloadRegistry();
     }
 
-    copyAndRegister(
-        args: ZodSchemaDefinition,
-        fun: ZodInputFunction,
-    ): ZodOverloadRegistry {
-        return new ZodOverloadRegistry([
+    copyAndRegister(args: ZodSchemaDefinition, fun: ZodRawFunction): OverloadRegistry {
+        return new OverloadRegistry([
             ...this.entries,
             {
                 schema: resolveSchema(args),
@@ -31,4 +28,4 @@ class ZodOverloadRegistry {
     }
 }
 
-export { ZodOverloadRegistry };
+export { OverloadRegistry };

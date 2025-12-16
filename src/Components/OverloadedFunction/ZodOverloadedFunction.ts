@@ -1,8 +1,8 @@
 import { OverloadsError } from "~/OverloadedFunction/Error/OverloadsError";
-import { ZodOverloadRegistry } from "~/OverloadedFunction/Registry/OverloadRegistry";
+import { OverloadRegistry } from "~/OverloadedFunction/Registry/OverloadRegistry";
 import type { ThisArg } from "~/Common/ThisArg";
-import type { ZodInputFunction } from "~/Common/ZodInputFunction";
 import type { ZodIssue } from "~/Common/ZodIssue";
+import type { ZodRawFunction } from "~/Common/ZodRawFunction";
 import type { ZodSchema } from "~/Common/ZodSchema";
 import type { ZodSchemaDefinition } from "~/Common/ZodSchemaDefinition";
 
@@ -19,9 +19,9 @@ import type { ZodOverloadReturn } from "./Types/ZodOverloadReturn";
  * @template Overloads The list of registered overloads.
  */
 class ZodOverloadedFunction<This, Overloads extends readonly ZodOverload[] = []> {
-    #registry: ZodOverloadRegistry;
+    #registry: OverloadRegistry;
 
-    private constructor(registry: ZodOverloadRegistry = ZodOverloadRegistry.create()) {
+    private constructor(registry: OverloadRegistry = OverloadRegistry.create()) {
         this.#registry = registry;
     }
 
@@ -46,7 +46,7 @@ class ZodOverloadedFunction<This, Overloads extends readonly ZodOverload[] = []>
      */
     overload<const As extends ZodSchema, R>(
         args: ZodSchemaDefinition<As>,
-        fn: ZodInputFunction<This, As, R>,
+        fn: ZodRawFunction<This, As, R>,
     ): ZodOverloadedFunction<This, [ZodOverload<As, R>, ...Overloads]> {
         return new ZodOverloadedFunction(this.#registry.copyAndRegister(args, fn));
     }

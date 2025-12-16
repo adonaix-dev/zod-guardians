@@ -1,5 +1,5 @@
-import type { ZodOverloadedArguments } from "./ZodOverloadedArguments";
 import type { ZodOverload } from "./ZodOverload";
+import type { ZodOverloadedArguments } from "./ZodOverloadedArguments";
 
 /**
  * Determines the return type based on the matching overload for the

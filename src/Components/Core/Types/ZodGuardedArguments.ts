@@ -4,7 +4,7 @@ import type { ZodSchema } from "~/Common/ZodSchema";
 import type { ZodSchemaArguments } from "~/Common/ZodSchemaArguments";
 import type { ZodSchemaRest } from "~/Common/ZodSchemaRest";
 
-type ZodSchemaOutputArguments<Args extends ZodSchema> =
+type ZodSchemaGuardedArguments<Args extends ZodSchema> =
     ZodSchemaArguments<Args> extends infer Args extends any[]
         ? {
               -readonly [Key in keyof Args]: output<Args[Key]>;
@@ -17,9 +17,9 @@ type ZodSchemaOutputArguments<Args extends ZodSchema> =
  *
  * @template Args The tuple of Zod schemas.
  */
-type ZodOutputArguments<Args extends ZodSchema> =
+type ZodGuardedArguments<Args extends ZodSchema> =
     ZodSchemaRest<Args> extends infer Rest extends ZodType
-        ? [...ZodSchemaOutputArguments<Args>, ...output<Rest>[]]
-        : ZodSchemaOutputArguments<Args>;
+        ? [...ZodSchemaGuardedArguments<Args>, ...output<Rest>[]]
+        : ZodSchemaGuardedArguments<Args>;
 
-export type { ZodOutputArguments };
+export type { ZodGuardedArguments };

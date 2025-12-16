@@ -7,8 +7,8 @@ import type { ZodSchemaArguments } from "~/Common/ZodSchemaArguments";
 import type { ZodSchemaDefinition } from "~/Common/ZodSchemaDefinition";
 import type { ZodSchemaRest } from "~/Common/ZodSchemaRest";
 
-import type { ZodInputArguments } from "./Types/ZodInputArguments";
-import type { ZodOutputArguments } from "./Types/ZodOutputArguments";
+import type { ZodGuardedArguments } from "./Types/ZodGuardedArguments";
+import type { ZodRawArguments } from "./Types/ZodRawArguments";
 
 /**
  * A utility class for validating a list of arguments against a
@@ -44,7 +44,7 @@ class ZodArguments<Args extends ZodSchema = ZodSchema> {
      * @returns The validated and transformed output arguments.
      * @throws {ArgumentsError} If validation fails.
      */
-    assert(args: ZodInputArguments<Args>): ZodOutputArguments<Args> {
+    assert(args: ZodRawArguments<Args>): ZodGuardedArguments<Args> {
         const { success, data, error } = this.#schema.safeParse(args);
         if (success) {
             return data as any;

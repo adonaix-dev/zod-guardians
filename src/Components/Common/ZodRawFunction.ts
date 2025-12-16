@@ -1,4 +1,4 @@
-import type { ZodOutputArguments } from "~/Core/Types/ZodOutputArguments";
+import type { ZodGuardedArguments } from "~/Core/Types/ZodGuardedArguments";
 
 import type { ZodSchema } from "./ZodSchema";
 
@@ -10,9 +10,9 @@ import type { ZodSchema } from "./ZodSchema";
  * @template Args The tuple of Zod schemas.
  * @template Return The return type of the function.
  */
-type ZodInputFunction<This = any, Args extends ZodSchema = ZodSchema, Return = any> = (
+type ZodRawFunction<This = any, Args extends ZodSchema = ZodSchema, Return = any> = (
     this: This,
-    ...args: ZodOutputArguments<Args>
+    ...args: ZodGuardedArguments<Args>
 ) => Return;
 
-export type { ZodInputFunction };
+export type { ZodRawFunction };
