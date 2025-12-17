@@ -1,6 +1,6 @@
 {
     "name": "zod-guardians",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "type": "module",
     "description": "Type-safe overloads and argument validation with Zod.",
     "repository": {
