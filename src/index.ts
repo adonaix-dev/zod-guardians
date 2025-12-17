@@ -16,3 +16,4 @@ export type { ZodGuardedArguments } from "~/Core/Types/ZodGuardedArguments";
 
 export type { ZodOverloadedArguments } from "~/OverloadedFunction/Types/ZodOverloadedArguments";
 export type { ZodOverloadReturn } from "~/OverloadedFunction/Types/ZodOverloadReturn";
+export type { ZodGuardedOverloadedFunction } from "~/OverloadedFunction/Types/ZodGuardedOverloadedFunction";

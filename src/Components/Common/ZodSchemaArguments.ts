@@ -10,10 +10,10 @@ import type { ZodSchema } from "./ZodSchema";
  * @template Args The tuple of Zod schemas.
  */
 type ZodSchemaArguments<Args extends ZodSchema> = Args extends readonly [
-    ...infer SchemaArguments extends ZodType[],
+    ...infer Arguments extends readonly ZodType[],
     readonly [ZodType],
 ]
-    ? SchemaArguments
+    ? Arguments
     : Args;
 
 export type { ZodSchemaArguments };

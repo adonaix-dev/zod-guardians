@@ -15,6 +15,6 @@ type ZodSchemaRest<Args extends ZodSchema> = Args extends readonly [
     ? Rest extends ZodType
         ? Rest
         : never
-    : never;
+    : null;
 
 export type { ZodSchemaRest };

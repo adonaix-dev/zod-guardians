@@ -5,7 +5,7 @@ import type { ZodSchemaArguments } from "~/Common/ZodSchemaArguments";
 import type { ZodSchemaRest } from "~/Common/ZodSchemaRest";
 
 type ZodSchemaGuardedArguments<Args extends ZodSchema> =
-    ZodSchemaArguments<Args> extends infer Args extends any[]
+    ZodSchemaArguments<Args> extends infer Args extends readonly ZodType[]
         ? {
               -readonly [Key in keyof Args]: output<Args[Key]>;
           }

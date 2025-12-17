@@ -6,6 +6,7 @@ import type { ZodRawFunction } from "~/Common/ZodRawFunction";
 import type { ZodSchema } from "~/Common/ZodSchema";
 import type { ZodSchemaDefinition } from "~/Common/ZodSchemaDefinition";
 
+import type { ZodGuardedOverloadedFunction } from "./Types/ZodGuardedOverloadedFunction";
 import type { ZodOverload } from "./Types/ZodOverload";
 import type { ZodOverloadedArguments } from "./Types/ZodOverloadedArguments";
 import type { ZodOverloadReturn } from "./Types/ZodOverloadReturn";
@@ -87,15 +88,12 @@ class ZodOverloadedFunction<This, Overloads extends readonly ZodOverload[] = []>
      *
      * @returns A function that can be called directly.
      */
-    compile(): <As extends ZodOverloadedArguments<Overloads>>(
-        this: This,
-        ...args: As
-    ) => ZodOverloadReturn<Overloads, As> {
+    compile(): ZodGuardedOverloadedFunction<This, Overloads> {
         const self = this;
 
         return function (this: This, ...args: any) {
             return self.apply(args, this as any);
-        };
+        } as any;
     }
 }
 

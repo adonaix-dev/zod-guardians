@@ -1,4 +1,4 @@
-import type { ZodTuple } from "zod";
+import type { z, ZodTuple } from "zod";
 
 import type { Assert } from "@adonaix/types";
 
