@@ -40,6 +40,9 @@ class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
      * @param args The definition of the arguments schemas. To define
      *   a rest parameter, wrap the last schema in an array (e.g.,
      *   `[z.string()]`).
+     *
+     *   If a function is provided, it is evaluated once at creation
+     *   time and must return a stable schema definition.
      * @param fun The implementation of the function.
      */
     static create<const As extends ZodSchema, Return, This = void>(
@@ -62,7 +65,6 @@ class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
      */
     apply(args: ZodRawArguments<Args>, thisArg: ThisArg<This>): Return {
         const { success, data, error } = this.#schema.safeParse(args);
-
         if (success) {
             return Reflect.apply(this.#fun, thisArg, data);
         }
@@ -71,8 +73,8 @@ class ZodFunction<This, Args extends ZodSchema = ZodSchema, Return = any> {
     }
 
     /**
-     * Compiles the validation and implementation into a single native
-     * function.
+     * Bundles the validation schemas and the implementation into a
+     * single closure.
      *
      * @returns A function that can be called directly.
      */

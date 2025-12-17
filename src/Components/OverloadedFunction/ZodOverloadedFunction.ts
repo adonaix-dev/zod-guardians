@@ -40,6 +40,9 @@ class ZodOverloadedFunction<This, Overloads extends readonly ZodOverload[] = []>
      * @param args The definition of the arguments schemas for this
      *   overload. To define a rest parameter, wrap the last schema in
      *   an array (e.g., `[z.string()]`).
+     *
+     *   If a function is provided, it is evaluated once at creation
+     *   time and must return a stable schema definition.
      * @param fn The implementation of the function for this specific
      *   overload.
      *
@@ -76,15 +79,15 @@ class ZodOverloadedFunction<This, Overloads extends readonly ZodOverload[] = []>
                 return Reflect.apply(fun, thisArg, data);
             }
 
-            issues.unshift(error.issues);
+            issues.push(error.issues);
         }
 
         throw new OverloadsError(issues);
     }
 
     /**
-     * Compiles the overloads into a single native function that
-     * handles dispatching based on validation.
+     * Bundles the registered overloads into a single closure that
+     * handles dispatching.
      *
      * @returns A function that can be called directly.
      */
